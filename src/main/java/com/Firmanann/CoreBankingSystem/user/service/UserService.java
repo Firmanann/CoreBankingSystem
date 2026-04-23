@@ -2,12 +2,13 @@ package com.Firmanann.CoreBankingSystem.user.service;
 
 import com.Firmanann.CoreBankingSystem.auth.dto.RegisterRequest;
 import com.Firmanann.CoreBankingSystem.roles.entity.RoleEntity;
+import com.Firmanann.CoreBankingSystem.roles.entity.RolesStatus;
 import com.Firmanann.CoreBankingSystem.roles.repository.RoleRepository;
-import com.Firmanann.CoreBankingSystem.security.PasswordService;
+import com.Firmanann.CoreBankingSystem.security.service.PasswordService;
 import com.Firmanann.CoreBankingSystem.user.entity.UserEntity;
 import com.Firmanann.CoreBankingSystem.user.repository.UserRepository;
-import com.Firmanann.CoreBankingSystem.common.exception.BusinessException;
-import com.Firmanann.CoreBankingSystem.common.exception.ErrorCode;
+import com.Firmanann.CoreBankingSystem.global.exception.BusinessException;
+import com.Firmanann.CoreBankingSystem.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +34,9 @@ public class UserService {
         //1. Validasi ketersediaan email
         validateEmailAvailability(request.getEmail());
 
-
-        //2.Find role and put to new object
-        RoleEntity userRole = roleRepo.findByName("USER")
-                .orElseThrow(() -> new BusinessException(ErrorCode.ROLE_MISSING));
+        //2. Cari role USER yang sudah ada di DB dan set ke new account
+        RoleEntity userRole = roleRepo.findByStatus((RolesStatus.USER))
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROLE_NOT_FOUND));
 
         //2. Hash Password dari input user
         String HashedPassword = passwordService.hashPassword(request.getPassword());
@@ -47,7 +47,7 @@ public class UserService {
         newUser.setUsername(request.getUsername());
         newUser.setEmail(request.getEmail());
         newUser.setPassword(HashedPassword);
-        newUser.setRoleId(userRole);
+        newUser.setRole(userRole);
 
         return userRepo.save(newUser);
     }

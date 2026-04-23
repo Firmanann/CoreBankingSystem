@@ -9,7 +9,7 @@ public class CoreBankingSystemApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CoreBankingSystemApplication.class, args);
 
-		System.out.println("Halo");
+		System.out.println("Halo madafaka");
 	}
 
 }

@@ -17,6 +17,7 @@ public class RoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String name;
+    @Column(name = "status", unique = true, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RolesStatus status;
 }

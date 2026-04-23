@@ -1,5 +1,6 @@
 package com.Firmanann.CoreBankingSystem.user.entity;
 
+import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity.RefreshTokenEntity;
 import com.Firmanann.CoreBankingSystem.roles.entity.RoleEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -32,9 +34,13 @@ public class UserEntity {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private RoleEntity roleId;
+    private RoleEntity role;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    //Relation with Refresh Token
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RefreshTokenEntity> refreshTokens;
 }

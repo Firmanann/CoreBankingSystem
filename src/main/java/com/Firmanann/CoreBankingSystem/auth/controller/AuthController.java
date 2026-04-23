@@ -1,9 +1,11 @@
 package com.Firmanann.CoreBankingSystem.auth.controller;
 
+import com.Firmanann.CoreBankingSystem.auth.dto.LoginRequest;
+import com.Firmanann.CoreBankingSystem.auth.dto.LoginResponse;
 import com.Firmanann.CoreBankingSystem.auth.dto.RegisterRequest;
 import com.Firmanann.CoreBankingSystem.auth.dto.RegisterResponse;
 import com.Firmanann.CoreBankingSystem.auth.service.AuthService;
-import com.Firmanann.CoreBankingSystem.common.response.GlobalResponse;
+import com.Firmanann.CoreBankingSystem.global.response.GlobalResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,21 @@ public class AuthController {
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    //Catch login endpoint
+    @PostMapping("/login")
+    public ResponseEntity<GlobalResponse<LoginResponse>> login (@Valid @RequestBody LoginRequest request){
+
+        LoginResponse data = authService.login(request);
+
+        GlobalResponse<LoginResponse> response = GlobalResponse.<LoginResponse>builder()
+                .status("success")
+                .message("login Successfully")
+                .data(data)
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

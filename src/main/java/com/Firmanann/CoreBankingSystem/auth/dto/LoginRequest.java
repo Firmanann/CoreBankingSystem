@@ -7,21 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//Blueprint data request ~ Validation ~ input error message
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
-
-    @NotBlank(message = "USERNAME_REQUIRED")
-    @Size(min = 5, max = 50)
-    private String username;
+public class LoginRequest {
 
     @NotBlank(message = "EMAIL_REQUIRED")
-    @Email (message = "EMAIL_FORMAT")
+    @Email(message = "EMAIL_FORMAT")
     private String email;
 
     @NotBlank (message = "PASSWORD_REQUIRED")
-    @Size(min = 8, message = "PASSWORD_SIZE")
     private String password;
 }

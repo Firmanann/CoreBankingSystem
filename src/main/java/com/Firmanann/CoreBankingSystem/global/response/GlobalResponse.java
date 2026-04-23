@@ -1,6 +1,5 @@
-package com.Firmanann.CoreBankingSystem.common.response;
+package com.Firmanann.CoreBankingSystem.global.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

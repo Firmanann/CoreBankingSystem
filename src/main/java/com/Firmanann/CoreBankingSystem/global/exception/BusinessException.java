@@ -1,4 +1,4 @@
-package com.Firmanann.CoreBankingSystem.common.exception;
+package com.Firmanann.CoreBankingSystem.global.exception;
 
 public class BusinessException extends RuntimeException {
 

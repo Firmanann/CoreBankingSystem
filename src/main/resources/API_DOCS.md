@@ -37,3 +37,13 @@ Error 409 - Conflict Data
 "status": "error",
 "message": "Email already exists"
 }
+
+POST /api/auth/login
+
+Request :
+
+{
+"email" : "String",
+"password" : "String"
+}
+

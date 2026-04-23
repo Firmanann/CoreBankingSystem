@@ -1,4 +1,4 @@
-package com.Firmanann.CoreBankingSystem.security;
+package com.Firmanann.CoreBankingSystem.security.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

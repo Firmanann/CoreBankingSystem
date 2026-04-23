@@ -1,4 +1,4 @@
-package com.Firmanann.CoreBankingSystem.common.exception;
+package com.Firmanann.CoreBankingSystem.global.exception;
 
 //Base error message
 public enum ErrorCode {
@@ -12,7 +12,10 @@ public enum ErrorCode {
 
     //Business error message
     EMAIL_EXISTS("Email sudah digunakan"),
-    ROLE_MISSING("Role tidak ditemukan");
+    ROLE_MISSING("Role tidak ditemukan"),
+    EMAIL_PASSWORD_INVALID("Email atau Password salah"),
+    USER_NOT_FOUND("User tidak ditemukan"),
+    ROLE_NOT_FOUND("Roles tidak ditemukan");
 
     private final String message;
 
