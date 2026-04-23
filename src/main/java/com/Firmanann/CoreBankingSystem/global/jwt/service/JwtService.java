@@ -27,8 +27,6 @@ public class JwtService {
     @Value("${jwt.refresh-expiration}")
     private long refreshExpiration;
 
-    // Digunakan untuk JWT Filter
-
     // Mengecek apakah tiket ini valid (Milik user yang benar DAN belum hangus)
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
@@ -39,8 +37,6 @@ public class JwtService {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-
-    // Pendukung Jwt Service (Functional programming)
 
     // Mengecek apakah tiket sudah melewati batas waktu (hangus)
     private boolean isTokenExpired(String token) {
@@ -66,8 +62,6 @@ public class JwtService {
                 .parseClaimsJws(token) // Proses bongkar dan verifikasi (akan error kalau tiket dipalsukan)
                 .getBody(); // Ambil isi datanya (Claims)
     }
-
-    //(GENERATOR JWT)
 
     // Mengubah String kunci rahasia (Base64) menjadi object kriptografi & Sebaliknya (Filter & Generate)
     private Key getSignInKey() {

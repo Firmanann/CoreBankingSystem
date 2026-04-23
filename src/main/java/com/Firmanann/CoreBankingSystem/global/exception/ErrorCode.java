@@ -15,7 +15,9 @@ public enum ErrorCode {
     ROLE_MISSING("Role tidak ditemukan"),
     EMAIL_PASSWORD_INVALID("Email atau Password salah"),
     USER_NOT_FOUND("User tidak ditemukan"),
-    ROLE_NOT_FOUND("Roles tidak ditemukan");
+    ROLE_NOT_FOUND("Roles tidak ditemukan"),
+    REFRESH_TOKEN_EXPIRED("Refresh Token Sudah Expire"),
+    REFRESH_TOKEN_INVALID("Refresh Token Invalid");
 
     private final String message;
 

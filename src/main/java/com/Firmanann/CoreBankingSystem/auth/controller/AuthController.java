@@ -1,9 +1,6 @@
 package com.Firmanann.CoreBankingSystem.auth.controller;
 
-import com.Firmanann.CoreBankingSystem.auth.dto.LoginRequest;
-import com.Firmanann.CoreBankingSystem.auth.dto.LoginResponse;
-import com.Firmanann.CoreBankingSystem.auth.dto.RegisterRequest;
-import com.Firmanann.CoreBankingSystem.auth.dto.RegisterResponse;
+import com.Firmanann.CoreBankingSystem.auth.dto.*;
 import com.Firmanann.CoreBankingSystem.auth.service.AuthService;
 import com.Firmanann.CoreBankingSystem.global.response.GlobalResponse;
 import jakarta.validation.Valid;
@@ -55,5 +52,21 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    //Catch refresh token endpoint
+    @PostMapping("/refresh")
+    public ResponseEntity<GlobalResponse<RefreshTokenResponse>> refreshToken (@Valid @RequestBody RefreshTokenRequest request) {
 
+        //Panggil refresh token service
+        RefreshTokenResponse data = authService.refreshToken(request);
+
+        GlobalResponse<RefreshTokenResponse> response = GlobalResponse.<RefreshTokenResponse>builder()
+                .status("success")
+                .message("Token refreshed successfully")
+                .data(data)
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
+
+

@@ -1,12 +1,11 @@
 package com.Firmanann.CoreBankingSystem.auth.service;
 
-import com.Firmanann.CoreBankingSystem.auth.dto.LoginRequest;
-import com.Firmanann.CoreBankingSystem.auth.dto.LoginResponse;
-import com.Firmanann.CoreBankingSystem.auth.dto.RegisterRequest;
-import com.Firmanann.CoreBankingSystem.auth.dto.RegisterResponse;
+import com.Firmanann.CoreBankingSystem.auth.dto.*;
+import com.Firmanann.CoreBankingSystem.global.exception.ErrorCode;
 import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity.RefreshTokenEntity;
 import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.repository.RefreshTokenRepository;
 import com.Firmanann.CoreBankingSystem.global.exception.BusinessException;
+import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.service.RefreshTokenService;
 import com.Firmanann.CoreBankingSystem.global.jwt.service.JwtService;
 import com.Firmanann.CoreBankingSystem.global.jwt.userDetails.CustomUserDetails;
 import com.Firmanann.CoreBankingSystem.user.entity.UserEntity;
@@ -19,8 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
-import static com.Firmanann.CoreBankingSystem.global.exception.ErrorCode.EMAIL_PASSWORD_INVALID;
-import static com.Firmanann.CoreBankingSystem.global.exception.ErrorCode.USER_NOT_FOUND;
+import static com.Firmanann.CoreBankingSystem.global.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +30,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
 
     public RegisterResponse register(RegisterRequest request){
 
@@ -83,6 +82,7 @@ public class AuthService {
                 .token(refreshToken)
                 .user(user)
                 .expiryDate(expiryDate)
+                .createdAt(Instant.now())
                 .build();
 
         //6. Simpan Data Refresh token ke db
@@ -96,5 +96,59 @@ public class AuthService {
                 .id(user.getId())
                 .username(user.getUsername())
                 .build();
+    }
+
+    public RefreshTokenResponse refreshToken (RefreshTokenRequest request){
+
+        //Functional programming
+        return refreshTokenRepository.findByToken(request.getRefreshToken())
+                .map( token ->{
+
+                    //1. Cek expire date.
+                    if (token.getExpiryDate().isBefore(Instant.now())){
+                        //Jika true hapus
+                        refreshTokenRepository.delete(token);
+                        throw new BusinessException(REFRESH_TOKEN_EXPIRED);
+                    }
+                    return token;
+                })
+                .map(token -> {
+
+                    //1. Validasi apakah umur token > 7 hari
+                    refreshTokenService.verifyTotalSession(token);
+
+                    //2. Hapus token yang lama
+                    refreshTokenRepository.delete(token);
+
+                    //3. Ambil data user dari token
+                    UserEntity user = token.getUser();
+
+                    //4.Masukkan data user ke custom user details
+                    CustomUserDetails detailUser = new CustomUserDetails(user);
+
+                    //5. Generate token baru
+                    String accessToken = jwtService.generateToken(detailUser);
+                    String refreshToken = jwtService.generateRefreshToken(detailUser);
+
+                    //6. Ambil createdAt dari token yang lama sebelum dihapus
+                    Instant originalCreationDate = token.getCreatedAt();
+
+                    //7. Build data token
+                    RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
+                            .token(refreshToken)
+                            .user(user)
+                            .expiryDate(originalCreationDate)
+                            .createdAt(Instant.now())
+                            .build();
+
+                    //8. Simpan data token ke db
+                    refreshTokenRepository.save(refreshTokenEntity);
+
+                    return RefreshTokenResponse.builder()
+                            .accessToken(accessToken)
+                            .refreshToken(refreshToken)
+                            .build();
+                })
+        .orElseThrow(() -> new BusinessException(REFRESH_TOKEN_INVALID));
     }
 }

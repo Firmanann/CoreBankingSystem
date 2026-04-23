@@ -45,6 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        //Proses jika terdapat header "Bearer"
         // 2. Extract Tokennya
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
