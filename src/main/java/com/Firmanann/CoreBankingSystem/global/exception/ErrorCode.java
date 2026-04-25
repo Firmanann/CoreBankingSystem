@@ -17,7 +17,8 @@ public enum ErrorCode {
     USER_NOT_FOUND("User tidak ditemukan"),
     ROLE_NOT_FOUND("Roles tidak ditemukan"),
     REFRESH_TOKEN_EXPIRED("Refresh Token Sudah Expire"),
-    REFRESH_TOKEN_INVALID("Refresh Token Invalid");
+    REFRESH_TOKEN_INVALID("Refresh Token Invalid"),
+    UNAUTHORIZED_LOGOUT("Data user Invalid");
 
     private final String message;
 

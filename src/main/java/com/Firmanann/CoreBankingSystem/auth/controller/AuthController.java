@@ -67,6 +67,21 @@ public class AuthController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    //Catch Logout endpoint
+    @PostMapping("/logout")
+    public ResponseEntity<GlobalResponse> logout (@Valid @RequestBody LogoutRequest request){
+
+        authService.logout(request);
+
+        GlobalResponse response = GlobalResponse.builder()
+                .status("success")
+                .message("Logout Success")
+                .data(null)
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
 
 

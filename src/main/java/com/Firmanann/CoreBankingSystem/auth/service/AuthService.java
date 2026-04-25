@@ -1,7 +1,6 @@
 package com.Firmanann.CoreBankingSystem.auth.service;
 
 import com.Firmanann.CoreBankingSystem.auth.dto.*;
-import com.Firmanann.CoreBankingSystem.global.exception.ErrorCode;
 import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity.RefreshTokenEntity;
 import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.repository.RefreshTokenRepository;
 import com.Firmanann.CoreBankingSystem.global.exception.BusinessException;
@@ -14,6 +13,7 @@ import com.Firmanann.CoreBankingSystem.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -137,8 +137,8 @@ public class AuthService {
                     RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
                             .token(refreshToken)
                             .user(user)
-                            .expiryDate(originalCreationDate)
-                            .createdAt(Instant.now())
+                            .expiryDate(Instant.now())
+                            .createdAt(originalCreationDate)
                             .build();
 
                     //8. Simpan data token ke db
@@ -151,4 +151,26 @@ public class AuthService {
                 })
         .orElseThrow(() -> new BusinessException(REFRESH_TOKEN_INVALID));
     }
+
+    public void logout (LogoutRequest request){
+
+        //1. Ambil data user dari token request
+        String userToken = jwtService.extractUsername(request.getRefreshToken());
+
+        //2. Ambil data user yang sedang aktif/login
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        //3. Verifikasi data user token == data user aktif
+        if (!userToken.equals(currentUser)) {
+            throw new BusinessException(UNAUTHORIZED_LOGOUT);
+        }
+
+        //4. Hapus data refresh token di db
+        refreshTokenRepository.findByToken(request.getRefreshToken())
+                .ifPresent(token -> refreshTokenRepository.delete(token));
+
+        //5. Bersihkan data di securityContextHolder
+        SecurityContextHolder.clearContext();
+    }
+
 }
