@@ -1,12 +1,10 @@
 package com.Firmanann.CoreBankingSystem.Auth;
 
-import com.Firmanann.CoreBankingSystem.auth.dto.LoginRequest;
-import com.Firmanann.CoreBankingSystem.auth.dto.LoginResponse;
-import com.Firmanann.CoreBankingSystem.auth.dto.RegisterRequest;
-import com.Firmanann.CoreBankingSystem.auth.dto.RegisterResponse;
+import com.Firmanann.CoreBankingSystem.auth.dto.*;
 import com.Firmanann.CoreBankingSystem.auth.service.AuthService;
 import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity.RefreshTokenEntity;
 import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.repository.RefreshTokenRepository;
+import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.service.RefreshTokenService;
 import com.Firmanann.CoreBankingSystem.global.jwt.service.JwtService;
 import com.Firmanann.CoreBankingSystem.global.jwt.userDetails.CustomUserDetails;
 import com.Firmanann.CoreBankingSystem.user.entity.UserEntity;
@@ -41,6 +39,9 @@ public class AuthServiceTest {
 
     @Mock
     private RefreshTokenRepository refreshTokenRepository;
+
+    @Mock
+    private RefreshTokenService refreshTokenService;
 
     @Mock
     private UserService userService;
@@ -96,7 +97,6 @@ public class AuthServiceTest {
         mockUser.setId(1L);
         mockUser.setUsername("firman");
         mockUser.setEmail("firman@gmail.com");
-        mockUser.setPassword("manmanman");
 
         //Buat mock data token
         String mockAccessToken = "mock-access-token";
@@ -118,9 +118,47 @@ public class AuthServiceTest {
         //Validasi hasil
         assertNotNull(response);
         assertEquals(mockAccessToken, response.getAccessToken());
-        assertEquals("firman", response.getUsername());
+        assertEquals(mockUser.getUsername(), response.getUsername());
 
         //Verify repository
+        verify(refreshTokenRepository, times(1)).save(any(RefreshTokenEntity.class));
+    }
+
+
+    @Test
+    void refreshToken_shouldReturnToken_whenSuccess(){
+
+        //Request = Refresh Token
+        RefreshTokenRequest request = new RefreshTokenRequest("valid-old-token");
+
+        //Membuat identitas token lama
+        UserEntity mockUser = new UserEntity();
+        mockUser.setUsername("firman");
+
+        RefreshTokenEntity oldTokenEntity = new RefreshTokenEntity();
+        oldTokenEntity.setToken("valid-old-token");
+        oldTokenEntity.setUser(mockUser);
+        oldTokenEntity.setExpiryDate(Instant.now().plusSeconds(3600));
+        oldTokenEntity.setCreatedAt(Instant.now().minusSeconds(86400));
+
+        String newAccessToken = "new-access-token";
+        String newRefreshToken = "new-Refresh-Token";
+
+        //Mocking
+        when(refreshTokenRepository.findByToken(request.getRefreshToken())).thenReturn(Optional.of(oldTokenEntity));
+        when(jwtService.generateToken(any(CustomUserDetails.class))).thenReturn(newAccessToken);
+        when(jwtService.generateRefreshToken(any(CustomUserDetails.class))).thenReturn(newRefreshToken);
+
+        //Act
+        RefreshTokenResponse response = authService.refreshToken(request);
+
+        //Assert
+        assertNotNull(response);
+        assertEquals(newAccessToken, response.getAccessToken());
+        assertEquals(newRefreshToken, response.getRefreshToken());
+
+        //Verifikasi
+        verify(refreshTokenRepository, times(1)).delete(oldTokenEntity);
         verify(refreshTokenRepository, times(1)).save(any(RefreshTokenEntity.class));
     }
 }
