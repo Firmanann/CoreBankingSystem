@@ -18,13 +18,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -160,5 +163,42 @@ public class AuthServiceTest {
         //Verifikasi
         verify(refreshTokenRepository, times(1)).delete(oldTokenEntity);
         verify(refreshTokenRepository, times(1)).save(any(RefreshTokenEntity.class));
+    }
+
+    @Test
+    void logout_success_shouldDeleteTokenAndClearContext(){
+
+        //Siapkan data
+        String requestToken = "valid-token";
+        LogoutRequest request = new LogoutRequest(requestToken);
+        String username = "firman";
+
+
+        RefreshTokenEntity mockTokenEntity = new RefreshTokenEntity();
+
+        //Set up mocking
+        when(jwtService.extractUsername(requestToken)).thenReturn(username);
+
+        //Manipulation authentication
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.getName()).thenReturn(username);
+
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        //Buat contect palsu ke security context holder
+        SecurityContextHolder.setContext(securityContext);
+
+        //Mock database
+        when(refreshTokenRepository.findByToken(requestToken)).thenReturn(Optional.of(mockTokenEntity));
+
+        //act/Eksekusi
+        authService.logout(request);
+
+        //Validasi kebenaran token dihapus dari db
+        verify(refreshTokenRepository, times(1)).delete(mockTokenEntity);
+
+        //Memastikan security contect holder di hapus
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
