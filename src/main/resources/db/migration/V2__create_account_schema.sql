@@ -1,0 +1,12 @@
+CREATE TABLE accounts (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    account_number VARCHAR(20) UNIQUE NOT NULL,
+    balance DECIMAL(19,2) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    version INT DEFAULT 0,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_account_user FOREIGN KEY (user_id) REFERENCES users(id)
+);

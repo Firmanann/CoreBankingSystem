@@ -1,5 +1,6 @@
 package com.Firmanann.CoreBankingSystem.user.entity;
 
+import com.Firmanann.CoreBankingSystem.accounts.entity.AccountEntity;
 import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity.RefreshTokenEntity;
 import com.Firmanann.CoreBankingSystem.roles.entity.RoleEntity;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,9 +40,13 @@ public class UserEntity {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    //Relation with Refresh Token
+    //Relation with Refresh Token table
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RefreshTokenEntity> refreshTokens;
+
+    //Relation with Accounts table
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountEntity> account;
 }
