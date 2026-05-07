@@ -13,27 +13,28 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    //input exception handler
+    // input exception handler
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException ex) {
 
         Map<String, String> fieldErrors = new HashMap<>();
 
-        //Loop to take all error field
+        // Loop to take all error field
         ex.getBindingResult().getFieldErrors().forEach(error -> {
-
             String fieldName = error.getField();
             String errorKey = error.getDefaultMessage();
 
-            //Translate message from ErrorCode
-            ErrorCode errorCode = ErrorCode.valueOf(errorKey);
-            String errorMessage = errorCode.getMessage();
-
-            //Put new error data in Map
-            fieldErrors.put(fieldName, errorMessage);
+            try {
+                // Translate message from ErrorCode
+                ErrorCode errorCode = ErrorCode.valueOf(errorKey);
+                fieldErrors.put(fieldName, errorCode.getMessage());
+            } catch (IllegalArgumentException e) {
+                // Jaring pengaman: Kalau message bukan dari Enum, pakai message aslinya aja
+                fieldErrors.put(fieldName, errorKey);
+            }
         });
 
-        //Design format
+        // Design format
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("status", "error");
         response.put("message", "Validation failed");
@@ -43,21 +44,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    //Business exception handler
+    // Business exception handler
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Map<String, Object>> handleBusinessException(BusinessException ex) {
 
-        //Design format
+        // 1. Buka koper ErrorCode dan ambil HTTP Status-nya secara dinamis
+        HttpStatus status = ex.getErrorCode().getHttpStatus();
+
+        // 2. Design format
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("status", "error");
         response.put("message", ex.getMessage());
         response.put("data", null);
         response.put("errors", null);
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        // 3. Return menggunakan status yang sesuai konteks
+        return ResponseEntity.status(status).body(response);
     }
-
-
-
-
 }

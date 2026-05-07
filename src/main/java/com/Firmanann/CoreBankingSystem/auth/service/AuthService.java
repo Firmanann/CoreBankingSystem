@@ -77,7 +77,7 @@ public class AuthService {
         // 5. Extract tanggal hangus token
         Instant expiryDate = jwtService.extractExpiration(refreshToken).toInstant();
 
-        //Desain datanya
+        //Desain data token/
         RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
                 .token(refreshToken)
                 .user(user)

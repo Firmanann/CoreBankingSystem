@@ -21,6 +21,10 @@ public class CustomUserDetails implements UserDetails {
         return List.of(); // Kosongin dulu, nanti buat Role
     }
 
+    public Long getId() {
+        return user.getId();
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();
@@ -32,22 +36,7 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
     public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
         return true;
     }
 }

@@ -4,7 +4,7 @@ public class BusinessException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    //save all business error
+    // Sekarang cuma butuh 1 parameter: ErrorCode
     public BusinessException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;

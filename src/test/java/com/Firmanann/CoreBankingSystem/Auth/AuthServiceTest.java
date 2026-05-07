@@ -70,7 +70,7 @@ public class AuthServiceTest {
         mockUser.setUsername("Firmanann");
         mockUser.setEmail("firman@gmail.com");
         mockUser.setPassword("manmanman");
-        mockUser.setCreatedAt(LocalDateTime.now());
+        mockUser.setCreatedAt(Instant.from(LocalDateTime.now()));
 
         //Berikan data untuk service yang berjalan
         when(userService.createUser(any())).thenReturn(mockUser);
