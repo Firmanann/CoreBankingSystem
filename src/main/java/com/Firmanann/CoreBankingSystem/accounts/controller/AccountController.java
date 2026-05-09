@@ -3,7 +3,6 @@ package com.Firmanann.CoreBankingSystem.accounts.controller;
 
 import com.Firmanann.CoreBankingSystem.accounts.dto.CreateAccountResponse;
 import com.Firmanann.CoreBankingSystem.accounts.service.AccountService;
-import com.Firmanann.CoreBankingSystem.auth.dto.RegisterResponse;
 import com.Firmanann.CoreBankingSystem.global.jwt.userDetails.CustomUserDetails;
 import com.Firmanann.CoreBankingSystem.global.response.GlobalResponse;
 import org.springframework.http.HttpStatus;
@@ -26,10 +25,11 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    /*
+
     @PostMapping("/me")
     public ResponseEntity<GlobalResponse<CreateAccountResponse>> createAccount (@AuthenticationPrincipal CustomUserDetails currentUserDetails){
 
+        //1 and 2 logic step (Create Account)
         //Take userid from token who's login
         Long loggedInUserId = currentUserDetails.getId();
 
@@ -45,5 +45,4 @@ public class AccountController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-     */
 }

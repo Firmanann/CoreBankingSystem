@@ -1,12 +1,8 @@
 package com.Firmanann.CoreBankingSystem.accounts.entity;
 
-import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity.AccountStatus; // Catatan: Sebaiknya pindahin Enum ini ke package akun, jangan nyampur di JWT.
 import com.Firmanann.CoreBankingSystem.user.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,6 +15,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table (name = "accounts")
+@Builder
 public class AccountEntity {
 
     @Id

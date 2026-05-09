@@ -1,7 +1,7 @@
 package com.Firmanann.CoreBankingSystem.accounts.dto;
 
 
-import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity.AccountStatus;
+import com.Firmanann.CoreBankingSystem.accounts.entity.AccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

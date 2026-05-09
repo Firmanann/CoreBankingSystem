@@ -1,7 +1,7 @@
 package com.Firmanann.CoreBankingSystem.accounts.repository;
 
 import com.Firmanann.CoreBankingSystem.accounts.entity.AccountEntity;
-import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity.AccountStatus;
+import com.Firmanann.CoreBankingSystem.accounts.entity.AccountStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -14,4 +14,8 @@ public interface AccountsRepository extends JpaRepository<AccountEntity, Long> {
 
     //method to check status by user id
     boolean existsByUserIdAndStatus(Long userId, AccountStatus status);
+
+    //method to check existing account number
+    boolean existsByAccountNumber(String accountNumber);
+
 }

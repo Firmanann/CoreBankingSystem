@@ -1,4 +1,4 @@
-package com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity;
+package com.Firmanann.CoreBankingSystem.accounts.entity;
 
 public enum AccountStatus {
 
