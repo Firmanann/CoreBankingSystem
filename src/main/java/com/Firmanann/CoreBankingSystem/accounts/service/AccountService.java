@@ -1,6 +1,7 @@
 package com.Firmanann.CoreBankingSystem.accounts.service;
 
 
+import com.Firmanann.CoreBankingSystem.accounts.dto.AccountDetailsResponse;
 import com.Firmanann.CoreBankingSystem.accounts.dto.CreateAccountResponse;
 import com.Firmanann.CoreBankingSystem.accounts.entity.AccountEntity;
 import com.Firmanann.CoreBankingSystem.accounts.repository.AccountsRepository;
@@ -42,7 +43,7 @@ public class AccountService {
     public CreateAccountResponse createAccount (Long loggedInUserId){
 
 
-        //3. Validate account status
+        //Validate account status
         boolean hasActiveAccount = accountsRepository.existsByUserIdAndStatus(loggedInUserId, AccountStatus.ACTIVE);
 
         if (hasActiveAccount){
@@ -74,4 +75,24 @@ public class AccountService {
                 createdAt(newAccount.getCreatedAt()).
                 build();
     }
+
+
+    public AccountDetailsResponse getAccountDetails(String accountNumber, Long loggedInUserId){
+
+        //Get account data from db
+        AccountEntity accountData = accountsRepository.findByAccountNumber(accountNumber).orElseThrow(() -> new BusinessException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        //get user data by account db
+        if (!accountData.getUser().getId().equals(loggedInUserId)){
+            throw new BusinessException(ErrorCode.UNAUTHORIZED_USER);
+        }
+
+        //design response
+        return AccountDetailsResponse.builder()
+                .username(accountData.getUser().getUsername())
+                .accountNumber(accountData.getAccountNumber())
+                .balance(accountData.getBalance())
+                .build();
+    }
 }
+

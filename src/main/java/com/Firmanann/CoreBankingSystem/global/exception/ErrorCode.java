@@ -20,10 +20,11 @@ public enum ErrorCode {
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND, "Roles tidak ditemukan"),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Refresh Token Sudah Expire"),
     REFRESH_TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "Refresh Token Invalid"),
-    UNAUTHORIZED_LOGOUT(HttpStatus.UNAUTHORIZED, "Data user Invalid"),
+    UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED, "Data user Invalid"),
 
     // Account module business
-    ACCOUNT_EXISTS(HttpStatus.CONFLICT, "Pembuatan Rekening gagal : Anda Sudah memiliki rekening aktif");
+    ACCOUNT_EXISTS(HttpStatus.CONFLICT, "Pembuatan Rekening gagal : Anda Sudah memiliki rekening aktif"),
+    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "Account Not Found");
 
 
     private final HttpStatus httpStatus;

@@ -162,7 +162,7 @@ public class AuthService {
 
         //3. Verifikasi data user token == data user aktif
         if (!userToken.equals(currentUser)) {
-            throw new BusinessException(UNAUTHORIZED_LOGOUT);
+            throw new BusinessException(UNAUTHORIZED_USER);
         }
 
         //4. Hapus data refresh token di db
