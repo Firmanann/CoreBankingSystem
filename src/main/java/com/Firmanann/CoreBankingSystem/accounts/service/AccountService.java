@@ -3,6 +3,8 @@ package com.Firmanann.CoreBankingSystem.accounts.service;
 
 import com.Firmanann.CoreBankingSystem.accounts.dto.AccountDetailsResponse;
 import com.Firmanann.CoreBankingSystem.accounts.dto.CreateAccountResponse;
+import com.Firmanann.CoreBankingSystem.accounts.dto.PatchAccountRequest;
+import com.Firmanann.CoreBankingSystem.accounts.dto.PatchAccountResponse;
 import com.Firmanann.CoreBankingSystem.accounts.entity.AccountEntity;
 import com.Firmanann.CoreBankingSystem.accounts.repository.AccountsRepository;
 import com.Firmanann.CoreBankingSystem.global.exception.BusinessException;
@@ -92,6 +94,28 @@ public class AccountService {
                 .username(accountData.getUser().getUsername())
                 .accountNumber(accountData.getAccountNumber())
                 .balance(accountData.getBalance())
+                .build();
+    }
+
+    public PatchAccountResponse patchAccount (String accountNumber, Long loggedInUserId, PatchAccountRequest request){
+
+        //Validate and get account data
+        AccountEntity accountData = accountsRepository.findByAccountNumber(accountNumber).orElseThrow(() -> new BusinessException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        //validate user data by account db
+        if (!accountData.getUser().getId().equals(loggedInUserId)){
+            throw new BusinessException(ErrorCode.UNAUTHORIZED_USER);
+        }
+
+        //Change Account status
+        accountData.setStatus(request.getStatus());
+
+        //save data
+        AccountEntity saveChanges = accountsRepository.save(accountData);
+
+        //Design response
+        return PatchAccountResponse.builder()
+                .status(saveChanges.getStatus())
                 .build();
     }
 }
