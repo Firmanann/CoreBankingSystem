@@ -1,8 +1,6 @@
 package com.Firmanann.CoreBankingSystem.accounts.dto;
 
 import com.Firmanann.CoreBankingSystem.accounts.entity.AccountStatus;
-import com.Firmanann.CoreBankingSystem.global.exception.ErrorCode;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
