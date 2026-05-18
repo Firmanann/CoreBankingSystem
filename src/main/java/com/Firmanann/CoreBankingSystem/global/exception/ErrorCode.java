@@ -26,7 +26,9 @@ public enum ErrorCode {
     ACCOUNT_EXISTS(HttpStatus.CONFLICT, "Pembuatan Rekening gagal : Anda Sudah memiliki rekening aktif"),
     ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "Account Not Found"),
     STATUS_REQUIRED(HttpStatus.BAD_REQUEST,"Status dibutuhkan"),
-    ACCOUNT_STATUS_INACTIVE(HttpStatus.UNAUTHORIZED, "Rekening Tidak Aktif");
+    ACCOUNT_STATUS_INACTIVE(HttpStatus.UNAUTHORIZED, "Rekening Tidak Aktif"),
+    INSUFFICIENT_BALANCE(HttpStatus.PAYMENT_REQUIRED, "Saldo tidak mencukupi");
+
 
 
     private final HttpStatus httpStatus;

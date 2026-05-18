@@ -9,18 +9,19 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepositRequest {
+@Data
+public class WithdrawRequest {
 
     @NotBlank(message = "Nomor rekening tujuan tidak boleh kosong")
-    private String targetAccountNumber;
+    private String sourceAccountNumber;
 
-    @NotNull(message = "Nominal deposit tidak boleh kosong")
+    @NotNull(message = "Nominal withdraw tidak boleh kosong")
     @DecimalMin(value = "10000.00", message = "Minimal deposit adalah Rp 10.000")
     private BigDecimal amount;
 
-    // Optional
+    //Optional
     private String description;
+
 }
