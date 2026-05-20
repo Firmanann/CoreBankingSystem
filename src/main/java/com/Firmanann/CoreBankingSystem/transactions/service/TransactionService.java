@@ -5,10 +5,7 @@ import com.Firmanann.CoreBankingSystem.accounts.entity.AccountStatus;
 import com.Firmanann.CoreBankingSystem.accounts.repository.AccountsRepository;
 import com.Firmanann.CoreBankingSystem.global.exception.BusinessException;
 import com.Firmanann.CoreBankingSystem.global.exception.ErrorCode;
-import com.Firmanann.CoreBankingSystem.transactions.dto.DepositRequest;
-import com.Firmanann.CoreBankingSystem.transactions.dto.DepositResponse;
-import com.Firmanann.CoreBankingSystem.transactions.dto.WithdrawRequest;
-import com.Firmanann.CoreBankingSystem.transactions.dto.WithdrawResponse;
+import com.Firmanann.CoreBankingSystem.transactions.dto.*;
 import com.Firmanann.CoreBankingSystem.transactions.entity.TransactionEntity;
 import com.Firmanann.CoreBankingSystem.transactions.entity.TransactionStatus;
 import com.Firmanann.CoreBankingSystem.transactions.entity.TransactionType;
@@ -133,6 +130,70 @@ public class TransactionService {
                 .referenceNumber(newTransaction.getReferenceNumber())
                 .sourceAccountNumber(request.getSourceAccountNumber())
                 .timestamp(newTransaction.getCreatedAt())
+                .build();
+    }
+
+    @Transactional
+    public TransferResponse transfer (TransferRequest request){
+
+        //Validate both account number
+        if (request.getSourceAccountNumber().equals(request.getTargetAccountNumber())){
+            throw new BusinessException(ErrorCode.SAME_ACCOUNT_TRANSFER);
+        }
+
+        //find SAN
+        AccountEntity sourceAccountNumber = accountsRepository.findByAccountNumber(request.getSourceAccountNumber())
+                .orElseThrow(() -> new BusinessException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        //find TAN
+        AccountEntity targetAccountNumber = accountsRepository.findByAccountNumber(request.getTargetAccountNumber())
+                .orElseThrow(() -> new BusinessException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        //validate SAN balance > amount
+        if (sourceAccountNumber.getBalance().compareTo(request.getAmount()) < 0) {
+            throw new BusinessException(ErrorCode.INSUFFICIENT_BALANCE);
+        }
+
+        //validate account status
+        if (sourceAccountNumber.getStatus() != AccountStatus.ACTIVE || targetAccountNumber.getStatus() != AccountStatus.ACTIVE) {
+            throw new BusinessException(ErrorCode.ACCOUNT_STATUS_INACTIVE);
+        }
+
+        //Calculate the balance
+        BigDecimal finalSanBalance = sourceAccountNumber.getBalance().subtract(request.getAmount());
+        BigDecimal finalTanBalance = targetAccountNumber.getBalance().add(request.getAmount());
+
+        //Set final balance
+        sourceAccountNumber.setBalance(finalSanBalance);
+        targetAccountNumber.setBalance(finalTanBalance);
+
+        //save the changes
+        accountsRepository.save(sourceAccountNumber);
+        accountsRepository.save(targetAccountNumber);
+
+        //Create new Transaction Object
+        TransactionEntity transactionData = TransactionEntity.builder()
+                .referenceNumber(generateReferenceNumber("TRF"))
+                .sourceAccountNumber(request.getSourceAccountNumber())
+                .targetAccountNumber(request.getTargetAccountNumber())
+                .amount(request.getAmount())
+                .transactionType(TransactionType.TRANSFER)
+                .transactionStatus(TransactionStatus.SUCCESS)
+                .description(request.getDescription())
+                .build();
+
+
+        //Save Object
+        TransactionEntity newTransaction = transactionRepository.save(transactionData);
+
+        //Design response
+        return TransferResponse.builder()
+                .sourceAccountNumber(request.getSourceAccountNumber())
+                .targetAccountNumber(request.getTargetAccountNumber())
+                .referenceNumber(newTransaction.getReferenceNumber())
+                .amount(request.getAmount())
+                .currentBalanceSourceAccountNumber(sourceAccountNumber.getBalance())
+                .createdAt(newTransaction.getCreatedAt())
                 .build();
     }
 }

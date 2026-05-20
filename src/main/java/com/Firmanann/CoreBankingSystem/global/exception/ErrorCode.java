@@ -27,7 +27,8 @@ public enum ErrorCode {
     ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "Account Not Found"),
     STATUS_REQUIRED(HttpStatus.BAD_REQUEST,"Status dibutuhkan"),
     ACCOUNT_STATUS_INACTIVE(HttpStatus.UNAUTHORIZED, "Rekening Tidak Aktif"),
-    INSUFFICIENT_BALANCE(HttpStatus.PAYMENT_REQUIRED, "Saldo tidak mencukupi");
+    INSUFFICIENT_BALANCE(HttpStatus.PAYMENT_REQUIRED, "Saldo tidak mencukupi"),
+    SAME_ACCOUNT_TRANSFER(HttpStatus.UNPROCESSABLE_ENTITY, "Rekening tujuan tidak boleh sama dengan rekening pengirim.");
 
 
 

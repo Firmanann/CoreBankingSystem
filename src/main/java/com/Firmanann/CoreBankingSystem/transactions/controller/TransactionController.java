@@ -2,10 +2,7 @@ package com.Firmanann.CoreBankingSystem.transactions.controller;
 
 
 import com.Firmanann.CoreBankingSystem.global.response.GlobalResponse;
-import com.Firmanann.CoreBankingSystem.transactions.dto.DepositRequest;
-import com.Firmanann.CoreBankingSystem.transactions.dto.DepositResponse;
-import com.Firmanann.CoreBankingSystem.transactions.dto.WithdrawRequest;
-import com.Firmanann.CoreBankingSystem.transactions.dto.WithdrawResponse;
+import com.Firmanann.CoreBankingSystem.transactions.dto.*;
 import com.Firmanann.CoreBankingSystem.transactions.service.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +43,21 @@ public class TransactionController {
         GlobalResponse<WithdrawResponse> response = GlobalResponse.<WithdrawResponse>builder()
                 .status("success")
                 .message("Withdraw Successfuly")
+                .data(data)
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public ResponseEntity<GlobalResponse<TransferResponse>> transfer (TransferRequest request){
+
+        //Process
+        TransferResponse data = transactionService.transfer(request);
+
+        //Response desgin
+        GlobalResponse<TransferResponse> response = GlobalResponse.<TransferResponse>builder()
+                .status("success")
+                .message("Transfer Successfuly")
                 .data(data)
                 .build();
 

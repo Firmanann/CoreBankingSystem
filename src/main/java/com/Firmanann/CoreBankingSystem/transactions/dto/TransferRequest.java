@@ -12,16 +12,20 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class WithdrawRequest {
+public class TransferRequest {
 
     @NotBlank(message = "Nomor rekening tidak boleh kosong")
     private String sourceAccountNumber;
 
-    @NotNull(message = "Nominal withdraw tidak boleh kosong")
-    @DecimalMin(value = "10000.00", message = "Minimal deposit adalah Rp 10.000")
+    @NotBlank(message = "Nomor rekening tujuan tidak boleh kosong")
+    private String targetAccountNumber;
+
+    @NotNull(message = "Nominal transfer tidak boleh kosong")
+    @DecimalMin(value = "10000.00", message = "Minimal transsfer adalah Rp 10.000")
     private BigDecimal amount;
 
-    //Optional
+    //optional
     private String description;
+
 
 }
