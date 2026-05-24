@@ -5,11 +5,11 @@
 ## 1. Auth Module (`/api/auth`)
 
 ### POST `/register`
-- [ ] **Happy Path:** Payload valid & email baru ➡️ `201/200` (Data masuk DB, password hash)
-- [ ] **Bad Path:** Email sudah terdaftar ➡️ `400/409` (Error: Email exists)
-- [ ] **Bad Path:** Format email salah (tanpa `@`) ➡️ `400 Bad Request`
-- [ ] **Bad Path:** Field mandatory kosong (null/blank) ➡️ `400 Bad Request`
-- [ ] **Bad Path:** Password kurang dari 8 karakter ➡️ `400 Bad Request`
+- [DONE] **Happy Path:** Payload valid & email baru ➡️ `201/200` (Data masuk DB, password hash)
+- [DONE] **Bad Path:** Email sudah terdaftar ➡️ `400/409` (Error: Email exists)
+- [DONE] **Bad Path:** Format email salah (tanpa `@`) ➡️ `400 Bad Request`
+- [DONE] **Bad Path:** Field mandatory kosong (null/blank) ➡️ `400 Bad Request`
+- [DONE] **Bad Path:** Password kurang dari 8 karakter ➡️ `400 Bad Request`
 
 ### POST `/login`
 - [ ] **Happy Path:** Email & password benar ➡️ `200 OK` (Return Token JWT)
@@ -31,14 +31,17 @@
 
 ## 2. Account Module (`/api/account`)
 
-### GET `/me`
-- [ ] **Happy Path:** Token JWT valid ➡️ `200 OK` (Tampil list rekening user)
+### POST `/me`
+- [ ] **Happy Path:** Token JWT valid & payload sesuai ➡️ `201 Created` (Rekening baru berhasil dibuat dan terikat ke user yang login)
 - [ ] **Bad Path:** Tanpa token / token expired ➡️ `401 Unauthorized`
+- [ ] **Bad Path:** Payload kosong atau tidak memenuhi syarat ➡️ `400 Bad Request`
+- [ ] **Bad Path (Limit):** Bikin rekening lagi padahal sudah punya/melewati batas maksimal rekening per user (Jika ada rule ini) ➡️ `409 Conflict` atau `400 Bad Request`
 
-### POST `/{accountnumber}`
-- [ ] **Happy Path:** Nomor rekening valid & token sah ➡️ `200/201` (Status berubah/terbuat)
+### PATCH `/{accountnumber}`
+- [ ] **Happy Path:** Nomor rekening valid, token sah, & payload benar ➡️ `200 OK` (Status rekening berhasil diubah)
 - [ ] **Bad Path (IDOR):** Token User A nembak rekening User B ➡️ `403 Forbidden`
 - [ ] **Bad Path:** Nomor rekening tidak terdaftar ➡️ `404 Not Found`
+- [ ] **Bad Path:** Payload status tidak valid (misal ngirim "AKTIF" padahal ENUM-nya "ACTIVE") ➡️ `400 Bad Request`
 
 ### GET `/{accountnumber}`
 - [ ] **Happy Path:** Nomor rekening valid & token sah ➡️ `200 OK` (Tampil saldo, tipe, status)
