@@ -12,10 +12,10 @@
 - [DONE] **Bad Path:** Password kurang dari 8 karakter ➡️ `400 Bad Request`
 
 ### POST `/login`
-- [ ] **Happy Path:** Email & password benar ➡️ `200 OK` (Return Token JWT)
-- [ ] **Bad Path:** Password salah ➡️ `401 Unauthorized` (Error: Invalid credentials)
-- [ ] **Bad Path:** Email tidak terdaftar ➡️ `401/404`
-- [ ] **Bad Path:** Request body kosong ➡️ `400 Bad Request`
+- [DONE] **Happy Path:** Email & password benar ➡️ `200 OK` (Return Token JWT)
+- [DONE] **Bad Path:** Password salah ➡️ `401 Unauthorized` (Error: Invalid credentials)
+- [DONE] **Bad Path:** Email tidak terdaftar ➡️ `401/404`
+- [DONE] **Bad Path:** Request body kosong ➡️ `400 Bad Request`
 
 ### POST `/refresh`
 - [ ] **Happy Path:** Refresh Token valid ➡️ `200 OK` (Return Access Token baru)

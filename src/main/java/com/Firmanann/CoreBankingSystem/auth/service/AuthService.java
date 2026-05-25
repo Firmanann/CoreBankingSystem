@@ -1,6 +1,7 @@
 package com.Firmanann.CoreBankingSystem.auth.service;
 
 import com.Firmanann.CoreBankingSystem.auth.dto.*;
+import com.Firmanann.CoreBankingSystem.global.exception.ErrorCode;
 import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.entity.RefreshTokenEntity;
 import com.Firmanann.CoreBankingSystem.global.jwt.refreshtoken.repository.RefreshTokenRepository;
 import com.Firmanann.CoreBankingSystem.global.exception.BusinessException;
@@ -48,10 +49,12 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
 
+        //1. Ambil data user dari database
+        UserEntity user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BusinessException(EMAIL_NOT_FOUND));
+
         try {
-            // 1. Serahkan urusan cek Email & Password ke Satpam Utama (AuthenticationManager)
-            // Ini akan otomatis memanggil CustomUserDetailsService dan BCrypt lu.
-            // Kalau password salah, dia otomatis ngelempar error.
+            //2. Validate email & password
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getEmail(),
@@ -62,10 +65,6 @@ public class AuthService {
             // Tangkap error dari Spring Security dan ubah jadi error bisnis lu
             throw new BusinessException(EMAIL_PASSWORD_INVALID);
         }
-
-        // 2. Ambil data user dari database
-        UserEntity user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
 
         // 3. Bungkus data user ke tempat CustomUserDetails
         CustomUserDetails customUser = new CustomUserDetails(user);

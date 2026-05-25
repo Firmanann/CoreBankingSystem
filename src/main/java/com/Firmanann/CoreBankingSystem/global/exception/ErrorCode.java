@@ -17,6 +17,7 @@ public enum ErrorCode {
     ROLE_MISSING(HttpStatus.BAD_REQUEST, "Role input tidak ditemukan"),
     EMAIL_PASSWORD_INVALID(HttpStatus.UNAUTHORIZED, "Email atau Password salah"), // 401 Unauthorized untuk gagal login
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User tidak ditemukan"), // 404 Not Found untuk data kosong di DB
+    EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "Email tidak terdaftar"),
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND, "Roles tidak ditemukan"),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Refresh Token Sudah Expire"),
     REFRESH_TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "Refresh Token Invalid"),
