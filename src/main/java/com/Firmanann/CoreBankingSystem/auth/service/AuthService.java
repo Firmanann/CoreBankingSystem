@@ -153,6 +153,11 @@ public class AuthService {
 
     public void logout (LogoutRequest request){
 
+        //Validasi token request
+        if (request.getRefreshToken() == null || request.getRefreshToken().isBlank()) {
+            throw new BusinessException(REFRESH_TOKEN_INVALID);
+        }
+
         //1. Ambil data user dari token request
         String userToken = jwtService.extractUsername(request.getRefreshToken());
 

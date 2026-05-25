@@ -23,9 +23,9 @@
 - [DONE] **Bad Path:** Format token invalid ➡️ `401 Unauthorized`
 
 ### POST `/logout`
-- [ ] **Happy Path:** Header bawa `Authorization: Bearer <token>` ➡️ `200 OK` (Token dimatikan)
-- [ ] **Bad Path:** Tanpa header Authorization ➡️ `401 Unauthorized`
-- [ ] **Bad Path:** Double logout (token sama 2x) ➡️ `401 Unauthorized`
+- [DONE] Happy Path: Header bawa Authorization: Bearer <access_token> DAN Body JSON bawa token valid ➡️ 200 OK
+- [DONE] Bad Path: Tanpa header Authorization ➡️ 401 Unauthorized (Ditolak satpam depan)
+- [DONE] Bad Path (Fraud Check): Header pakai Token User A, tapi Body JSON minta logout Token User B ➡️ 403 Forbidden / Error UNAUTHORIZED_USER
 
 ---
 
