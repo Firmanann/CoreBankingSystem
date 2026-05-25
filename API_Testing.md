@@ -18,9 +18,9 @@
 - [DONE] **Bad Path:** Request body kosong ➡️ `400 Bad Request`
 
 ### POST `/refresh`
-- [ ] **Happy Path:** Refresh Token valid ➡️ `200 OK` (Return Access Token baru)
-- [ ] **Bad Path:** Token expired ➡️ `401 Unauthorized`
-- [ ] **Bad Path:** Format token invalid ➡️ `401 Unauthorized`
+- [DONE] **Happy Path:** Refresh Token valid ➡️ `200 OK` (Return Access Token baru)
+- [DONE] **Bad Path:** Token expired ➡️ `401 Unauthorized`
+- [DONE] **Bad Path:** Format token invalid ➡️ `401 Unauthorized`
 
 ### POST `/logout`
 - [ ] **Happy Path:** Header bawa `Authorization: Bearer <token>` ➡️ `200 OK` (Token dimatikan)
