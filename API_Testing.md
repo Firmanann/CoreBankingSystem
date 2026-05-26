@@ -37,10 +37,10 @@
 - [DONE] **Bad Path (Limit):** Bikin rekening lagi padahal sudah punya/melewati batas maksimal rekening per user (Jika ada rule ini) ➡️ `409 Conflict` atau `400 Bad Request`
 
 ### PATCH `/{accountnumber}`
-- [ ] **Happy Path:** Nomor rekening valid, token sah, & payload benar ➡️ `200 OK` (Status rekening berhasil diubah)
-- [ ] **Bad Path (IDOR):** Token User A nembak rekening User B ➡️ `403 Forbidden`
-- [ ] **Bad Path:** Nomor rekening tidak terdaftar ➡️ `404 Not Found`
-- [ ] **Bad Path:** Payload status tidak valid (misal ngirim "AKTIF" padahal ENUM-nya "ACTIVE") ➡️ `400 Bad Request`
+- [DONE] **Happy Path:** Nomor rekening valid, token sah, & payload benar ➡️ `200 OK` (Status rekening berhasil diubah)
+- [DONE] **Bad Path (IDOR):** Token User A nembak rekening User B ➡️ `403 Forbidden`
+- [DONE] **Bad Path:** Nomor rekening tidak terdaftar ➡️ `404 Not Found`
+- [DONE] **Bad Path:** Payload status tidak valid (misal ngirim "AKTIF" padahal ENUM-nya "ACTIVE") ➡️ `400 Bad Request`
 
 ### GET `/{accountnumber}`
 - [ ] **Happy Path:** Nomor rekening valid & token sah ➡️ `200 OK` (Tampil saldo, tipe, status)
