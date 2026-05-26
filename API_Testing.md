@@ -22,20 +22,19 @@
 - [DONE] **Bad Path:** Token expired ➡️ `401 Unauthorized`
 - [DONE] **Bad Path:** Format token invalid ➡️ `401 Unauthorized`
 
-### POST `/logout`
-- [DONE] Happy Path: Header bawa Authorization: Bearer <access_token> DAN Body JSON bawa token valid ➡️ 200 OK
-- [DONE] Bad Path: Tanpa header Authorization ➡️ 401 Unauthorized (Ditolak satpam depan)
-- [DONE] Bad Path (Fraud Check): Header pakai Token User A, tapi Body JSON minta logout Token User B ➡️ 403 Forbidden / Error UNAUTHORIZED_USER
+### POST `/logout`'
+- [DONE] **Happy Path:** Header bawa Authorization: Bearer <access_token> DAN Body JSON bawa token valid ➡️ `200 OK`
+- [DONE] **Bad Path:** Tanpa header Authorization ➡️ `401 Unauthorized` (Ditolak satpam depan)
+- [DONE] **Bad Path:** (Fraud Check): Header pakai Token User A, tapi Body JSON minta logout Token User B ➡️ `403 Forbidden`
 
 ---
 
 ## 2. Account Module (`/api/account`)
 
 ### POST `/me`
-- [ ] **Happy Path:** Token JWT valid & payload sesuai ➡️ `201 Created` (Rekening baru berhasil dibuat dan terikat ke user yang login)
-- [ ] **Bad Path:** Tanpa token / token expired ➡️ `401 Unauthorized`
-- [ ] **Bad Path:** Payload kosong atau tidak memenuhi syarat ➡️ `400 Bad Request`
-- [ ] **Bad Path (Limit):** Bikin rekening lagi padahal sudah punya/melewati batas maksimal rekening per user (Jika ada rule ini) ➡️ `409 Conflict` atau `400 Bad Request`
+- [DONE] **Happy Path:** Token JWT valid & payload sesuai ➡️ `201 Created` (Rekening baru berhasil dibuat dan terikat ke user yang login)
+- [DONE] **Bad Path:** Tanpa token / token expired ➡️ `401 Unauthorized`
+- [DONE] **Bad Path (Limit):** Bikin rekening lagi padahal sudah punya/melewati batas maksimal rekening per user (Jika ada rule ini) ➡️ `409 Conflict` atau `400 Bad Request`
 
 ### PATCH `/{accountnumber}`
 - [ ] **Happy Path:** Nomor rekening valid, token sah, & payload benar ➡️ `200 OK` (Status rekening berhasil diubah)
