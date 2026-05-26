@@ -43,9 +43,9 @@
 - [DONE] **Bad Path:** Payload status tidak valid (misal ngirim "AKTIF" padahal ENUM-nya "ACTIVE") ➡️ `400 Bad Request`
 
 ### GET `/{accountnumber}`
-- [ ] **Happy Path:** Nomor rekening valid & token sah ➡️ `200 OK` (Tampil saldo, tipe, status)
-- [ ] **Bad Path (IDOR):** Token User A intip rekening User B ➡️ `403/401`
-- [ ] **Bad Path:** Nomor rekening tidak terdaftar ➡️ `404 Not Found`
+- [DONE] **Happy Path:** Nomor rekening valid & token sah ➡️ `200 OK` (Tampil saldo, tipe, status)
+- [DONE] **Bad Path (IDOR):** Token User A intip rekening User B ➡️ `403/401`
+- [DONE] **Bad Path:** Nomor rekening tidak terdaftar ➡️ `404 Not Found`
 
 ---
 
