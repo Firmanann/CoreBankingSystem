@@ -52,10 +52,10 @@
 ## 3. Transaction Module (`/api/transaction`)
 
 ### POST `/deposit`
-- [ ] **Happy Path:** Nominal valid ke rekening aktif ➡️ `200 OK` (Saldo nambah, catat CASH_DEPOSIT)
-- [ ] **Bad Path:** Nominal minus/nol ➡️ `400 Bad Request`
-- [ ] **Bad Path:** Rekening tidak terdaftar ➡️ `404 Not Found`
-- [ ] **Bad Path:** Status rekening FROZEN/CLOSED ➡️ `400 Bad Request` (ACCOUNT_STATUS_INACTIVE)
+- [DONE] **Happy Path:** Nominal valid ke rekening aktif ➡️ `200 OK` (Saldo nambah, catat CASH_DEPOSIT)
+- [DONE] **Bad Path:** Nominal minus/nol ➡️ `400 Bad Request`
+- [DONE] **Bad Path:** Rekening tidak terdaftar ➡️ `404 Not Found`
+- [DONE] **Bad Path:** Status rekening FROZEN/CLOSED ➡️ `400 Bad Request` (ACCOUNT_STATUS_INACTIVE)
 
 ### POST `/withdraw`
 - [ ] **Happy Path:** Nominal valid, saldo cukup, rekening sendiri ➡️ `200 OK` (Saldo kurang)

@@ -25,7 +25,7 @@ public enum ErrorCode {
 
     // Account module business
     ACCOUNT_EXISTS(HttpStatus.CONFLICT, "Pembuatan Rekening gagal : Anda Sudah memiliki rekening aktif"),
-    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "Account Not Found"),
+    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "Rekening Tidak Terdaftar"),
     STATUS_REQUIRED(HttpStatus.BAD_REQUEST,"Status dibutuhkan"),
     ACCOUNT_STATUS_INACTIVE(HttpStatus.UNAUTHORIZED, "Rekening Tidak Aktif"),
     INSUFFICIENT_BALANCE(HttpStatus.PAYMENT_REQUIRED, "Saldo tidak mencukupi"),
