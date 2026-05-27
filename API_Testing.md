@@ -58,11 +58,11 @@
 - [DONE] **Bad Path:** Status rekening FROZEN/CLOSED ➡️ `400 Bad Request` (ACCOUNT_STATUS_INACTIVE)
 
 ### POST `/withdraw`
-- [ ] **Happy Path:** Nominal valid, saldo cukup, rekening sendiri ➡️ `200 OK` (Saldo kurang)
-- [ ] **Bad Path (IDOR):** Token User A tarik dari rekening User B ➡️ `403 Forbidden`
-- [ ] **Bad Path (Saldo):** Tarik tunai lewati sisa saldo ➡️ `400 Bad Request` (INSUFFICIENT_BALANCE)
-- [ ] **Bad Path (Limit):** Tarik tunai di bawah Rp 50.000 ➡️ `400 Bad Request`
-- [ ] **Bad Path:** Status rekening tidak aktif ➡️ `400 Bad Request`
+- [DONE] **Happy Path:** Nominal valid, saldo cukup, rekening sendiri ➡️ `200 OK` (Saldo kurang)
+- [DONE] **Bad Path (IDOR):** Token User A tarik dari rekening User B ➡️ `403 Forbidden`
+- [DONE] **Bad Path (Saldo):** Tarik tunai lewati sisa saldo ➡️ `400 Bad Request` (INSUFFICIENT_BALANCE)
+- [DONE] **Bad Path (Limit):** Tarik tunai di bawah Rp 50.000 ➡️ `400 Bad Request`
+- [DONE] **Bad Path:** Status rekening tidak aktif ➡️ `400 Bad Request`
 
 ### POST `/transfer`
 - [ ] **Happy Path:** Nominal valid, saldo cukup, target aktif ➡️ `200 OK` (Saldo pindah)

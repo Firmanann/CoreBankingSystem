@@ -18,7 +18,7 @@ public class WithdrawRequest {
     private String sourceAccountNumber;
 
     @NotNull(message = "Nominal withdraw tidak boleh kosong")
-    @DecimalMin(value = "10000.00", message = "Minimal deposit adalah Rp 10.000")
+    @DecimalMin(value = "50000.00", message = "Minimal Withdraw adalah Rp 50.000")
     private BigDecimal amount;
 
     //Optional
