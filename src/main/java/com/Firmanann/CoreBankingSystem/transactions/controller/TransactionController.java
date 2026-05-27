@@ -1,12 +1,14 @@
 package com.Firmanann.CoreBankingSystem.transactions.controller;
 
 
+import com.Firmanann.CoreBankingSystem.global.jwt.userDetails.CustomUserDetails;
 import com.Firmanann.CoreBankingSystem.global.response.GlobalResponse;
 import com.Firmanann.CoreBankingSystem.transactions.dto.*;
 import com.Firmanann.CoreBankingSystem.transactions.service.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,7 @@ public class TransactionController {
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<GlobalResponse<DepositResponse>> deposit (@Valid @RequestBody DepositRequest request){
+    public ResponseEntity<GlobalResponse<DepositResponse>> deposit (@Valid @RequestBody DepositRequest request, @AuthenticationPrincipal CustomUserDetails currentUser){
 
         //Process
         DepositResponse data = transactionService.deposit(request);
@@ -41,7 +43,7 @@ public class TransactionController {
     }
 
     @PostMapping("/withdraw")
-    public ResponseEntity<GlobalResponse<WithdrawResponse>> withdraw (@Valid @RequestBody WithdrawRequest request){
+    public ResponseEntity<GlobalResponse<WithdrawResponse>> withdraw (@Valid @RequestBody WithdrawRequest request, @AuthenticationPrincipal CustomUserDetails currentUser){
 
         WithdrawResponse data = transactionService.withdraw(request);
 
@@ -55,10 +57,13 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<GlobalResponse<TransferResponse>> transfer (@Valid @RequestBody TransferRequest request){
+    public ResponseEntity<GlobalResponse<TransferResponse>> transfer (@Valid @RequestBody TransferRequest request, @AuthenticationPrincipal CustomUserDetails currentUser){
+
+        //
+        Long loggedInUserId = currentUser.getId();
 
         //Process
-        TransferResponse data = transactionService.transfer(request);
+        TransferResponse data = transactionService.transfer(loggedInUserId, request);
 
         //Response desgin
         GlobalResponse<TransferResponse> response = GlobalResponse.<TransferResponse>builder()

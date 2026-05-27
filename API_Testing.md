@@ -65,9 +65,9 @@
 - [DONE] **Bad Path:** Status rekening tidak aktif ➡️ `400 Bad Request`
 
 ### POST `/transfer`
-- [ ] **Happy Path:** Nominal valid, saldo cukup, target aktif ➡️ `200 OK` (Saldo pindah)
-- [ ] **Bad Path (Self):** Rekening asal = Rekening tujuan ➡️ `400 Bad Request`
-- [ ] **Bad Path (IDOR):** Token User A transfer pakai rekening User B ➡️ `403 Forbidden`
-- [ ] **Bad Path (Saldo):** Transfer lewati sisa saldo pengirim ➡️ `400 Bad Request` (Saldo target aman)
-- [ ] **Bad Path:** Rekening target tidak terdaftar ➡️ `404 Not Found`
-- [ ] **Bad Path:** Rekening target tidak aktif ➡️ `400 Bad Request` (Saldo asal aman)
+- [DONE] **Happy Path:** Nominal valid, saldo cukup, target aktif ➡️ `200 OK` (Saldo pindah)
+- [DONE] **Bad Path (Self):** Rekening asal = Rekening tujuan ➡️ `400 Bad Request`
+- [DONE] **Bad Path (IDOR):** Token User A transfer pakai rekening User B ➡️ `403 Forbidden`
+- [DONE] **Bad Path (Saldo):** Transfer lewati sisa saldo pengirim ➡️ `400 Bad Request`
+- [DONE] **Bad Path:** Rekening target tidak terdaftar ➡️ `404 Not Found`
+- [DONE] **Bad Path:** Rekening target tidak aktif ➡️ `400 Bad Request` 

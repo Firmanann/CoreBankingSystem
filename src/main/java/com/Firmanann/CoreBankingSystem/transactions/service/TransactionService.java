@@ -134,16 +134,21 @@ public class TransactionService {
     }
 
     @Transactional
-    public TransferResponse transfer (TransferRequest request){
+    public TransferResponse transfer (Long loggedInUserId, TransferRequest request){
+
+        //Cari rekening asal di DB
+        AccountEntity sourceAccountNumber = accountsRepository.findByAccountNumber(request.getSourceAccountNumber())
+                .orElseThrow(() -> new BusinessException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        //VALIDASI KEAMANAN (IDOR CHECK)
+        if (!sourceAccountNumber.getUser().getId().equals(loggedInUserId)) {
+            throw new BusinessException(ErrorCode.UNAUTHORIZED_USER);
+        }
 
         //Validate both account number
         if (request.getSourceAccountNumber().equals(request.getTargetAccountNumber())){
             throw new BusinessException(ErrorCode.SAME_ACCOUNT_TRANSFER);
         }
-
-        //find SAN
-        AccountEntity sourceAccountNumber = accountsRepository.findByAccountNumber(request.getSourceAccountNumber())
-                .orElseThrow(() -> new BusinessException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         //find TAN
         AccountEntity targetAccountNumber = accountsRepository.findByAccountNumber(request.getTargetAccountNumber())
