@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # 1. Service Database (PostgreSQL)
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: core_banking_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: namnan
+      POSTGRES_DB: banking
+    ports:
+      - "5432:5432" # Biar lu tetep bisa ngecek isi DB pakai IntelliJ/DBeaver dari luar
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Nyimpen data biar ga ilang pas container mati
+    restart: unless-stopped
+
+  # 2. Service Aplikasi Lu (Spring Boot)
+  banking_app:
+    build: . # Ngebaca file Dockerfile yang barusan lu buat
+    container_name: core_banking_app
+    ports:
+      - "8080:8080" # Port Postman ke Port Spring Boot
+    environment:
+      # Nama DB_HOST disamakan persis dengan nama service database di atas (postgres_db)
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_NAME=banking
+      - DB_USER=postgres
+      - DB_PASSWORD=namnan
+    depends_on:
+      - postgres_db # Pastiin DB nyala duluan sebelum Spring Boot jalan
+    restart: always
+
+volumes:
+  postgres_data:
